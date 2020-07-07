@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
-                android:src="@drawable/dummy"
+                android:src="@drawable/noimg"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,6 @@
                 android:layout_marginBottom="8dp"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:text="Student who says she flap has a replacement rodent, lawyer says"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:singleLine="false"/>
@@ -65,8 +64,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
-                android:textSize="14sp"
-                android:text="Author: Gaurav" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </RelativeLayout>

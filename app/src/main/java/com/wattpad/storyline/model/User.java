@@ -1,9 +1,19 @@
-package com.wattpad.storyline;
+package com.wattpad.storyline.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
+
+    public User(){
+        setToDefaults();
+    }
+
+    private void setToDefaults(){
+        userName = "User Name";
+        userAvatar = "User Avatar";
+        userFullName = "User FullName";
+    }
 
     @Expose
     @SerializedName("name")

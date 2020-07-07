@@ -1,16 +1,15 @@
-package com.wattpad.storyline;
+package com.wattpad.storyline.data;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.wattpad.storyline.model.Story;
+
 import java.util.List;
 
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 
 @Dao
 public interface IStoryDao {
@@ -21,5 +20,5 @@ public interface IStoryDao {
     void deleteAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllOrders(List<Story> stories);
+    void insertAllStories(List<Story> stories);
 }

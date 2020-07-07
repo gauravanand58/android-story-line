@@ -8,28 +8,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.wattpad.storyline.model.Story;
+import com.wattpad.storyline.viewmodel.StoryViewModel;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView storyRecyclerView;
-    private StoryListAdapter storyListAdapter;
-    private StoryViewModel storyViewModel;
+    private RecyclerView mRecyclerView;
+    private StoryListAdapter mStoryListAdapter;
+    private StoryViewModel mStoryViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        storyRecyclerView = findViewById(R.id.story_recycler_view);
-        storyViewModel = new ViewModelProvider(this).get(StoryViewModel.class);
-        storyViewModel.getStoryList().observe(this, new Observer<List<Story>>() {
+        mRecyclerView = findViewById(R.id.story_recycler_view);
+        mStoryViewModel = new ViewModelProvider(this).get(StoryViewModel.class);
+        mStoryViewModel.getStoryList().observe(this, new Observer<List<Story>>() {
             @Override
             public void onChanged(List<Story> stories) {
-                storyListAdapter.setStories(stories);
+                mStoryListAdapter.setStories(stories);
             }
         });
 
-        storyListAdapter = new StoryListAdapter(this);
-        storyRecyclerView.setAdapter(storyListAdapter);
-        storyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mStoryListAdapter = new StoryListAdapter(this);
+        mRecyclerView.setAdapter(mStoryListAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

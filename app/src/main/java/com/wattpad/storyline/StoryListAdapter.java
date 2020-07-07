@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.wattpad.storyline.model.Story;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.Stor
         mInflater = LayoutInflater.from(context);
     }
 
-    class StoryViewholder extends RecyclerView.ViewHolder{
+    static class StoryViewholder extends RecyclerView.ViewHolder{
         private ImageView storyCoverImage;
         private TextView storyTitle;
         private TextView storyAuthor;
@@ -58,8 +59,6 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.Stor
                     .into(holder.storyCoverImage);
             holder.storyTitle.setText(currentStory.getTitle());
             holder.storyAuthor.setText(currentStory.getUser().getUserFullName());
-        } else {
-            holder.storyTitle.setText("No Word");
         }
     }
 

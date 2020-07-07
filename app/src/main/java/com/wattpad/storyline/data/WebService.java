@@ -1,4 +1,6 @@
-package com.wattpad.storyline;
+package com.wattpad.storyline.data;
+
+import com.wattpad.storyline.model.StoryPage;
 
 import io.reactivex.Maybe;
 import retrofit2.http.GET;

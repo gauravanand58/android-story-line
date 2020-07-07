@@ -1,4 +1,4 @@
-package com.wattpad.storyline;
+package com.wattpad.storyline.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -6,6 +6,7 @@ import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.wattpad.storyline.util.DataConverter;
 
 @Entity(tableName = "story")
 public class Story {
