@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 
 @Database(entities = {Story.class}, version = 2, exportSchema = false)
 public abstract class StoryRoomDatabase extends RoomDatabase {
-    public abstract StoryDao storyDao();
+    public abstract IStoryDao storyDao();
 
     private static volatile StoryRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

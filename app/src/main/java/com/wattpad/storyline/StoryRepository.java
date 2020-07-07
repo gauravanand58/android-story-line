@@ -2,18 +2,12 @@ package com.wattpad.storyline;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,40 +18,26 @@ import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class StoryRepository {
-    private static final String BASE_URL = "https://www.wattpad.com/api/v3/";
-    private static final long FRESH_TIMEOUT = TimeUnit.HOURS.toMillis(1);
+public class StoryRepository implements IStoryRepository{
     private static StoryRepository sInstance;
 
     private Context context;
+    private IStoryRemoteSource storyRemoteSource;
     private WebService webService;
-    private StoryDao storyDao;
+    private IStoryDao storyDao;
     private MutableLiveData<List<Story>> storyList;
 
     private StoryRepository(Application application) {
-        final Gson gson = new GsonBuilder().setFieldNamingPolicy(
-                FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        final Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        webService = retrofit.create(WebService.class);
         StoryRoomDatabase database = StoryRoomDatabase.getDatabase(application);
         storyDao = database.storyDao();
         context = application.getApplicationContext();
         storyList = new MutableLiveData<>();
-        fetchStoriesFromWeb();
-        fetchListFromDB();
+        storyRemoteSource = new StoryRemoteSource();
+        fetchStoriesFromDB();
     }
 
     public static StoryRepository getInstance(Application application) {
@@ -71,11 +51,7 @@ public class StoryRepository {
         return storyList;
     }
 
-    public void fetchListFromDB(){
-//        if(storyList.getValue() == null) {
-//            fetchFromWeb();
-//        }
-
+    public void fetchStoriesFromDB(){
         Maybe<List<Story>> single = storyDao.getStoryLine();
         single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,22 +85,24 @@ public class StoryRepository {
     }
 
     private void fetchStoriesFromWeb() {
-        Observable<StoryPage> list = webService.getStoryList();
+        Maybe<StoryPage> list = storyRemoteSource.getStoryPageFromWeb();
         Log.d("Gaurav", list.toString());
         list.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<StoryPage>() {
+                .subscribe(new MaybeObserver<StoryPage>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d("Gaurav", "subscribed");
                     }
 
                     @Override
-                    public void onNext(StoryPage page) {
+                    public void onSuccess(StoryPage storyPage) {
                         Log.d("Gaurav", "fetched items");
-                        Log.d("Gaurav:", Arrays.toString(page.getStories().toArray()));
-                        updateStoriesToDB(page.getStories());
+                        Log.d("Gaurav:", Arrays.toString(storyPage.getStories().toArray()));
+                        updateStoriesToDB(storyPage.getStories());
                     }
+
+
 
                     @Override
                     public void onError(Throwable e) {
@@ -166,8 +144,6 @@ public class StoryRepository {
                         // something went wrong
                     }
                 });
-
-
     }
 }
 

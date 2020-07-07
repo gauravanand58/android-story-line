@@ -9,10 +9,11 @@ import androidx.room.Query;
 import java.util.List;
 
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao
-public interface StoryDao {
+public interface IStoryDao {
     @Query("SELECT * from story")
     Maybe<List<Story>> getStoryLine();
 
@@ -21,7 +22,4 @@ public interface StoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllOrders(List<Story> stories);
-
-//    @Query("SELECT COUNT(*) FROM story WHERE last_update <= :timeout")
-//    int hasFreshStories(long timeout);
 }
