@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">StoryLine</string>
+    <string name="app_name">Story Line</string>
+    <string name="story_saved_text">Stories saved to view in offline mode.</string>
 </resources>

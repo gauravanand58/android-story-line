@@ -65,7 +65,6 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
                 android:textSize="14sp" />
-
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
